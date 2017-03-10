@@ -13,6 +13,7 @@ struct FIR_coeff {
 	float b4;   
 };
 //Defines the structure of the coefficients for the FIR filter.
-float FIR_C(float input, struct FIR_coeff* coeff, int Order);
+float FIR_pitch(float input, struct FIR_coeff* coeff, int Order);
+float FIR_roll(float input, struct FIR_coeff* coeff, int Order);
 
 #endif

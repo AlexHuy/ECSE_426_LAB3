@@ -28,8 +28,12 @@ void init_TIM4()
 	//Init PWM functions
 	HAL_TIM_PWM_MspInit(&tim4_handle);
 	HAL_TIM_PWM_Init(&tim4_handle);
-	HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_4);
+	
+	//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
 	
 	//Enable IRQ for TIM4 and set its priority
 	HAL_NVIC_EnableIRQ(TIM4_IRQn);
