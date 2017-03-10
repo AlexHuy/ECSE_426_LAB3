@@ -14,6 +14,8 @@
 #include "lis3dsh.h"
 #include "accelerometer.h"
 #include "keypad.h"
+#include "timer.h"
+#include "math.h"
 
 /* Private variables ---------------------------------------------------------*/
 float accelerometer_data[3];
@@ -24,6 +26,8 @@ void SystemClock_Config	(void);
 int main(void)
 {	
 	float pitch, roll;
+	float desired_pitch, desired_roll;
+	float pitch_diff, roll_diff;
 	int output[] = {0, 0, 0};
 	int i;
   /* MCU Configuration----------------------------------------------------------*/
@@ -36,13 +40,15 @@ int main(void)
   /* Initialize all configured peripherals */
 	__HAL_RCC_TIM4_CLK_ENABLE();
 	__GPIOE_CLK_ENABLE();
+	__GPIOA_CLK_ENABLE();
+	__GPIOC_CLK_ENABLE();
 	
 	init_accelerometer();
 	while (1)
 	{
 		if(accel_rdy_flag == 1)
 		{
-			order_key(output);
+			/*order_key(output);
 			if (key_stage == 4){
 				key_stage = 0;
 				printf("Angle entered is");
@@ -50,7 +56,7 @@ int main(void)
 					printf("%d", output[i]);
 			}
 			target = output[0]*100 + output[1]*10 +output[2];
-		}
+		}*/
 			/*printf("Data on x: %f\n", accelerometer_data[0]);
 			printf("Data on y: %f\n", accelerometer_data[1]);
 			printf("Data on z: %f\n", accelerometer_data[2]);*/
@@ -59,8 +65,52 @@ int main(void)
 			
 			pitch = calc_pitch(accelerometer_data);
 			printf("Pitch is: %f\n", pitch);
+			pitch_diff = desired_pitch - pitch;
+			if(pitch_diff == 0)
+			{
+				set_DC(0);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			else if(fabs(pitch_diff) < 45 && fabs(pitch_diff) > 0 )
+			{
+				set_DC(1);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			else if(fabs(pitch_diff) < 90 && fabs(pitch_diff) > 45)
+			{
+				set_DC(2);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			else if(fabs(pitch_diff) < 180 && fabs(pitch_diff) > 90)
+			{
+				set_DC(3);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			
 			roll = calc_roll(accelerometer_data);
 			printf("Roll is: %f\n", roll);
+			roll_diff = desired_roll - roll;
+			if(roll_diff == 0)
+			{
+				set_DC(0);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			else if(fabs(roll_diff) < 45 && fabs(roll_diff) > 0 )
+			{
+				set_DC(1);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			else if(fabs(roll_diff) < 90 && fabs(roll_diff) > 45)
+			{
+				set_DC(2);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			else if(fabs(roll_diff) < 180 && fabs(roll_diff) > 90)
+			{
+				set_DC(3);
+				//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+			}
+			
 			accel_rdy_flag = 0;
 		}
 	}

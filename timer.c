@@ -1,11 +1,11 @@
 #include "timer.h"
 #include "main.h"
 
+TIM_Base_InitTypeDef tim_init;
+TIM_OC_InitTypeDef tim_oc;
+
 void init_TIM4()
 {
-	TIM_Base_InitTypeDef tim_init;
-	TIM_OC_InitTypeDef tim_oc;
-	
 	//Initialize the base init typedef of TIM
 	//Desired Timer Frequency =  Timer Input Frequency / (Prescaler * Period) 
 	//Desired = 2KHz
@@ -33,8 +33,6 @@ void init_TIM4()
 	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_4);
 	
-	//HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
-	
 	//Enable IRQ for TIM4 and set its priority
 	HAL_NVIC_EnableIRQ(TIM4_IRQn);
 	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
@@ -51,5 +49,19 @@ void init_LED()
 	GPIOD_init.Alternate = GPIO_AF2_TIM4;
 	
 	HAL_GPIO_Init(GPIOD, &GPIOD_init);
+}
+
+void set_DC(int stage)
+{
+	if(stage == 0)
+		tim_oc.Pulse = 0;
+	else if(stage == 1)
+		tim_oc.Pulse = 500;
+	else if(stage == 2)
+		tim_oc.Pulse = 1000;
+	else if(stage == 3)
+		tim_oc.Pulse = 1500;
+	else
+		tim_oc.Pulse = 2000;
 }
 

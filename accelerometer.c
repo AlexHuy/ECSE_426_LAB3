@@ -1,4 +1,5 @@
 #include "accelerometer.h"
+#include "FIR_filter.h"
 
 float ACC11 = -2.3e-05;
 float ACC21 = 0.001005;
@@ -12,6 +13,8 @@ float ACC33 = 0.000979;
 float ACC10 = -0.01367;
 float ACC20 = -0.00307;
 float ACC30 = 0.002137;
+
+struct FIR_coeff coeff;
 
 void init_accelerometer() 
 {
@@ -38,6 +41,12 @@ void init_accelerometer()
 	//Enable IRQ for accelerometer and set its priority
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+	
+	coeff.b0 = 0.1;
+	coeff.b1 = 0.15;
+	coeff.b2 = 0.5;
+	coeff.b3 = 0.15;
+	coeff.b4 = 0.1;
 }
 
 void calibrate_accelerometer_data(float accelerometer_d[3])
@@ -56,12 +65,12 @@ void calibrate_accelerometer_data(float accelerometer_d[3])
 //Calculates the pitch of the board using the 3 axis.
 float calc_pitch(float accelerometer_data[3]){
 	float pitch = atanf(accelerometer_data[0]/(sqrtf(accelerometer_data[1]*accelerometer_data[1] + accelerometer_data[2]*accelerometer_data[2])));
-	return radToDegree(pitch);
+	return radToDegree(FIR_pitch(pitch, &coeff, 4));
 }
 
 float calc_roll(float accelerometer_data[3]){
 	float roll = atanf(accelerometer_data[1]/(sqrtf(accelerometer_data[0]*accelerometer_data[0] + accelerometer_data[2]*accelerometer_data[2])));
-	return radToDegree(roll);
+	return radToDegree(FIR_roll(roll, &coeff, 4));
 }
 
 float radToDegree(float rad)

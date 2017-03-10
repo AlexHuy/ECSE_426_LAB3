@@ -48,10 +48,10 @@ void init_columns(void) {
 uint8_t read_rows(void){
 	init_rows();
 	//If a row button has been pressed return that number if not return 0.
-	if(!HAL_GPIO_READPin(GPIOA, GPIO_PIN_1)) return 1;
-	else if(!HAL_GPIO_READPin(GPIOA, GPIO_PIN_2)) return 2;
-	else if(!HAL_GPIO_READPin(GPIOA, GPIO_PIN_3)) return 3;
-	else if(!HAL_GPIO_READPin(GPIOA, GPIO_PIN_4)) return 4;
+	if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1)) return 1;
+	else if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2)) return 2;
+	else if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3)) return 3;
+	else if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4)) return 4;
 	else return 0;
 
 }
@@ -64,9 +64,9 @@ void delay(uint32_t time){
 uint8_t read_columns(void){
 	init_columns();
 	//If a column button has been pressed return that number if not return 0.
-	if(!HAL_GPIO_READPin(GPIOC, GPIO_PIN_0)) return 1;
-	else if(!HAL_GPIO_READPin(GPIOC, GPIO_PIN_1)) return 2;
-	else if(!HAL_GPIO_READPin(GPIOC, GPIO_PIN_2)) return 3;
+	if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)) return 1;
+	else if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) return 2;
+	else if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2)) return 3;
 	else return 0;
 
 }
@@ -114,7 +114,7 @@ int return_key(void) {
 	while(1){
 		while(determine_key(read_rows(),read_columns()) == key){
 			j++;
-			delay(25);
+			//delay(25);
 		}
 		if(j > 2) break;
 		else return return_key();
