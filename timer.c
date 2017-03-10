@@ -38,6 +38,7 @@ void init_TIM4()
 	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
 }
 
+//Initialize GPIO pin for built in LED
 void init_LED()
 {
 	GPIO_InitTypeDef GPIOD_init;
@@ -51,17 +52,18 @@ void init_LED()
 	HAL_GPIO_Init(GPIOD, &GPIOD_init);
 }
 
+//Change the Duty Cycle depending on the stages
 void set_DC(int stage)
 {
-	if(stage == 0)
+	if(stage == 0) //Stage 0 corresponds to 0%, LED off
 		tim_oc.Pulse = 0;
-	else if(stage == 1)
+	else if(stage == 1) //Stage 1 corresponds to 25%
 		tim_oc.Pulse = 500;
-	else if(stage == 2)
+	else if(stage == 2) //Stage 2 corresponds to 50%
 		tim_oc.Pulse = 1000;
-	else if(stage == 3)
+	else if(stage == 3) //Stage 3 corresponds to 75%
 		tim_oc.Pulse = 1500;
 	else
-		tim_oc.Pulse = 2000;
+		tim_oc.Pulse = 2000; //Others corresponds to 100%, LED fully on
 }
 

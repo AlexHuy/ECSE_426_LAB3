@@ -49,6 +49,7 @@ void init_accelerometer()
 	coeff.b4 = 0.1;
 }
 
+//Calibrates the raw value with the offline calibration value obtained 
 void calibrate_accelerometer_data(float accelerometer_d[3])
 {
 	float tempX = 0, tempY = 0, tempZ = 0;
