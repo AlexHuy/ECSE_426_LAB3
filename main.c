@@ -12,6 +12,7 @@
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 #include "lis3dsh.h"
+#include "accelerometer.h"
 
 /* Private variables ---------------------------------------------------------*/
 float accelerometer_data[3];
@@ -31,8 +32,19 @@ int main(void)
   /* Initialize all configured peripherals */
 	__HAL_RCC_TIM4_CLK_ENABLE();
 	__GPIOE_CLK_ENABLE();
+	
+	init_accelerometer();
 
-	while (1){
+	while (1)
+	{
+		if(accel_rdy_flag == 1)
+		{
+			printf("Data on x: %f\n", accelerometer_data[0]);
+			printf("Data on y: %f\n", accelerometer_data[1]);
+			printf("Data on z: %f\n", accelerometer_data[2]);
+			
+			accel_rdy_flag = 0;
+		}
 	}
 }
 

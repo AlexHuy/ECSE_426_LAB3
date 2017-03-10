@@ -50,6 +50,8 @@
   */
 
 /* Private typedef -----------------------------------------------------------*/
+TIM_HandleTypeDef tim4_handle;
+int accel_rdy_flag;
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -179,6 +181,7 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
 	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+	accel_rdy_flag = 1;
 }
 
 /**
