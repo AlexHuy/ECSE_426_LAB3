@@ -24,7 +24,7 @@ int main(void)
 {	
 	float pitch, roll;
   /* MCU Configuration----------------------------------------------------------*/
-
+	int target;
   HAL_Init();
 
   /* Configure the system clock */
@@ -35,11 +35,20 @@ int main(void)
 	__GPIOE_CLK_ENABLE();
 	
 	init_accelerometer();
-
+	int output[3] = {0, 0, 0};
 	while (1)
 	{
 		if(accel_rdy_flag == 1)
 		{
+			order_key(output);
+			if (key_stage == 4){
+				key_stage = 0;
+				printf("Angle entered is");
+				for(int i =0; i++; i<3){
+					printf("%d", output[i]);
+			}
+			target = output[0]*100 + output[1]*10 +output[2];
+		}
 			/*printf("Data on x: %f\n", accelerometer_data[0]);
 			printf("Data on y: %f\n", accelerometer_data[1]);
 			printf("Data on z: %f\n", accelerometer_data[2]);*/
