@@ -1,5 +1,6 @@
 #include "accelerometer.h"
 #include "lis3dsh.h"
+#include "stm32f4xx_it.h"
 
 void init_accelerometer() 
 {
@@ -11,4 +12,17 @@ void init_accelerometer()
 	accel_init.AA_Filter_BW = LIS3DSH_AA_BW_50;
 	accel_init.Full_Scale = LIS3DSH_FULLSCALE_2;
 	accel_init.Self_Test = LIS3DSH_SELFTEST_NORMAL ;
+	
+	LIS3DSH_DRYInterruptConfigTypeDef accel_it_config;
+	
+	accel_it_config.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;
+	accel_it_config.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL;
+	accel_it_config.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
+	
+	LIS3DSH_Init(&accel_init);
+	LIS3DSH_DataReadyInterruptConfig(&accel_it_config);
+	
+	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
 }
+

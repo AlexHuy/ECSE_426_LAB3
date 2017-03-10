@@ -80,37 +80,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	LIS3DSH_ReadACC(accelerometer_data);
 }
 
-void init_TIM4()
-{
-	TIM_Base_InitTypeDef tim_init;
-	
-	//Initialize the base init typedef of TIM
-	//Desired Timer Frequency =  Timer Input Frequency / (Prescaler * Period) 
-	//Desired = 2KHz
-	//Timer Input Frequency = 84MHz
-	tim_init.Prescaler = 1000;
-	tim_init.CounterMode = TIM_COUNTERMODE_UP;
-	tim_init.Period = 42;
-	tim_init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	
-	TIM_OC_InitTypeDef tim_oc;
-	
-	//Initialize the oc init typedef of TIM
-	tim_oc.OCMode = TIM_OCMODE_PWM1;
-	
-	
-	tim4_handle.Instance = TIM4;
-	tim4_handle.Init = tim_init;
-	tim4_handle.Channel = HAL_TIM_ACTIVE_CHANNEL_CLEARED;
-	tim4_handle.Lock = HAL_UNLOCKED;
-	tim4_handle.State = HAL_TIM_STATE_READY;
-	
-	HAL_TIM_PWM_MspInit(tim4_handle);
-	HAL_TIM_PWM_Init(tim4_handle);
-	HAL_TIM_PWM_ConfigChannel();
-	HAL_TIM_PWM_Start_IT();
-}
-
 #ifdef USE_FULL_ASSERT
 
 /**
