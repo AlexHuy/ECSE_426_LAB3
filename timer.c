@@ -1,9 +1,10 @@
 #include "timer.h"
-#inlcude "main.h"
+#include "main.h"
 
 void init_TIM4()
 {
 	TIM_Base_InitTypeDef tim_init;
+	TIM_OC_InitTypeDef tim_oc;
 	
 	//Initialize the base init typedef of TIM
 	//Desired Timer Frequency =  Timer Input Frequency / (Prescaler * Period) 
@@ -13,8 +14,6 @@ void init_TIM4()
 	tim_init.CounterMode = TIM_COUNTERMODE_UP;
 	tim_init.Period = 2000;
 	tim_init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	
-	TIM_OC_InitTypeDef tim_oc;
 	
 	//Initialize the oc init typedef of TIM
 	tim_oc.OCMode = TIM_OCMODE_PWM1;
@@ -26,8 +25,13 @@ void init_TIM4()
 	tim4_handle.Lock = HAL_UNLOCKED;
 	tim4_handle.State = HAL_TIM_STATE_READY;
 	
-	HAL_TIM_PWM_MspInit(tim4_handle);
-	HAL_TIM_PWM_Init(tim4_handle);
-	HAL_TIM_PWM_ConfigChannel(tim4_handle, tim_oc, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(tim4_handle, TIM_CHANNEL_1);
+	//Init PWM functions
+	HAL_TIM_PWM_MspInit(&tim4_handle);
+	HAL_TIM_PWM_Init(&tim4_handle);
+	HAL_TIM_PWM_ConfigChannel(&tim4_handle, &tim_oc, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&tim4_handle, TIM_CHANNEL_1);
+	
+	//Enable IRQ for TIM4 and set its priority
+	HAL_NVIC_EnableIRQ(TIM4_IRQn);
+	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
 }

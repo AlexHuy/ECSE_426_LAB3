@@ -43,7 +43,7 @@
 #include "stm32f4xx_hal.h"
 
 /* Exported types ------------------------------------------------------------*/
-TIM_HandleTypeDef tim4_handle;
+extern TIM_HandleTypeDef tim4_handle;
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
