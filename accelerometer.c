@@ -1,5 +1,18 @@
 #include "accelerometer.h"
-#include "math.h"
+
+float ACC11 = -2.3e-05;
+float ACC21 = 0.001005;
+float ACC31 = 6.03e-06;
+float ACC12 = 0.001024;
+float ACC22 = 2.51e-06;
+float ACC32 = 2.34e-05;
+float ACC13 = 3.29e-07;
+float ACC23 = -3.8e-06;
+float ACC33 = 0.000979;
+float ACC10 = -0.01367;
+float ACC20 = -0.00307;
+float ACC30 = 0.002137;
+
 void init_accelerometer() 
 {
 	LIS3DSH_InitTypeDef accel_init;
@@ -26,13 +39,33 @@ void init_accelerometer()
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
 }
+
+void calibrate_accelerometer_data(float accelerometer_d[3])
+{
+	float tempX = 0, tempY = 0, tempZ = 0;
+	
+	tempX = accelerometer_d[0] * ACC11 + accelerometer_d[1] * ACC12 + accelerometer_d[3] * ACC13 + ACC10;
+	tempY = accelerometer_d[0] * ACC21 + accelerometer_d[1] * ACC22 + accelerometer_d[3] * ACC23 + ACC20;
+	tempZ = accelerometer_d[0] * ACC31 + accelerometer_d[1] * ACC32 + accelerometer_d[3] * ACC33 + ACC30;
+	
+	accelerometer_d[0] = tempX;
+	accelerometer_d[1] = tempY;
+	accelerometer_d[2] = tempZ;
+}
+
 //Calculates the pitch of the board using the 3 axis.
 float calc_pitch(float accelerometer_data[3]){
 	float pitch = atanf(accelerometer_data[0]/(sqrtf(accelerometer_data[1]*accelerometer_data[1] + accelerometer_data[2]*accelerometer_data[2])));
-	return pitch;
+	return radToDegree(pitch);
 }
 
 float calc_roll(float accelerometer_data[3]){
 	float roll = atanf(accelerometer_data[1]/(sqrtf(accelerometer_data[0]*accelerometer_data[0] + accelerometer_data[2]*accelerometer_data[2])));
-	return roll;
+	return radToDegree(roll);
+}
+
+float radToDegree(float rad)
+{
+	float degrees = rad * 180/PI;
+	return degrees;
 }

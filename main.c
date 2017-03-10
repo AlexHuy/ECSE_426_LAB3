@@ -22,6 +22,7 @@ void SystemClock_Config	(void);
 
 int main(void)
 {	
+	float pitch, roll;
   /* MCU Configuration----------------------------------------------------------*/
 
   HAL_Init();
@@ -39,12 +40,15 @@ int main(void)
 	{
 		if(accel_rdy_flag == 1)
 		{
-			printf("Data on x: %f\n", accelerometer_data[0]);
+			/*printf("Data on x: %f\n", accelerometer_data[0]);
 			printf("Data on y: %f\n", accelerometer_data[1]);
-			printf("Data on z: %f\n", accelerometer_data[2]);
-			float pitch = calc_pitch(accelerometer_data);
+			printf("Data on z: %f\n", accelerometer_data[2]);*/
+			
+			calibrate_accelerometer_data(accelerometer_data);
+			
+			pitch = calc_pitch(accelerometer_data);
 			printf("Pitch is: %f\n", pitch);
-			float roll = calc_roll(accelerometer_data);
+			roll = calc_roll(accelerometer_data);
 			printf("Roll is: %f\n", roll);
 			accel_rdy_flag = 0;
 		}

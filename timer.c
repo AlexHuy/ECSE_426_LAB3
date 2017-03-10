@@ -21,7 +21,7 @@ void init_TIM4()
 	
 	tim4_handle.Instance = TIM4;
 	tim4_handle.Init = tim_init;
-	tim4_handle.Channel = HAL_TIM_ACTIVE_CHANNEL_1;
+	tim4_handle.Channel = HAL_TIM_ACTIVE_CHANNEL_1 | HAL_TIM_ACTIVE_CHANNEL_2 | HAL_TIM_ACTIVE_CHANNEL_3 | HAL_TIM_ACTIVE_CHANNEL_4;
 	tim4_handle.Lock = HAL_UNLOCKED;
 	tim4_handle.State = HAL_TIM_STATE_READY;
 	
@@ -35,3 +35,17 @@ void init_TIM4()
 	HAL_NVIC_EnableIRQ(TIM4_IRQn);
 	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
 }
+
+void init_LED()
+{
+	GPIO_InitTypeDef GPIOD_init;
+	
+	GPIOD_init.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+	GPIOD_init.Mode = GPIO_MODE_AF_PP;
+	GPIOD_init.Pull = GPIO_NOPULL;
+	GPIOD_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIOD_init.Alternate = GPIO_AF2_TIM4;
+	
+	HAL_GPIO_Init(GPIOD, &GPIOD_init);
+}
+
