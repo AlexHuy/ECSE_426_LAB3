@@ -41,7 +41,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-
+uint8_t key_stage;
 /* Exported types ------------------------------------------------------------*/
 extern TIM_HandleTypeDef tim4_handle;
 /* Exported constants --------------------------------------------------------*/
