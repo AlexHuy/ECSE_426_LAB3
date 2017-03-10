@@ -1,5 +1,5 @@
 #include "accelerometer.h"
-
+#include "math.h"
 void init_accelerometer() 
 {
 	LIS3DSH_InitTypeDef accel_init;
@@ -26,4 +26,13 @@ void init_accelerometer()
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
 }
+//Calculates the pitch of the board using the 3 axis.
+float calc_pitch(float accelerometer_data[3]){
+	float pitch = atanf(accelerometer_data[0]/(sqrtf(accelerometer_data[1]*accelerometer_data[1] + accelerometer_data[2]*accelerometer_data[2])));
+	return pitch;
+}
 
+float calc_roll(float accelerometer_data[3]){
+	float roll = atanf(accelerometer_data[1]/(sqrtf(accelerometer_data[0]*accelerometer_data[0] + accelerometer_data[2]*accelerometer_data[2])));
+	return roll;
+}
