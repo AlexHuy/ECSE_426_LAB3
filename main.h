@@ -45,6 +45,7 @@
 /* Exported types ------------------------------------------------------------*/
 extern TIM_HandleTypeDef tim4_handle;
 extern int accel_rdy_flag;
+extern int key_stage;
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 #define PI 3.1415

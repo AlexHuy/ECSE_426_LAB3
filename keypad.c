@@ -3,7 +3,8 @@
 #include "main.h"
 GPIO_InitTypeDef GPIOA_init;
 GPIO_InitTypeDef GPIOC_init;
-
+int key_stage;
+int8_t TDelay;
 
 //Initializes used pins rows: A1, A2, A3, A4 and columns: C0, C1, C2.
 //This method is used to read rows (not columns).
@@ -53,6 +54,10 @@ uint8_t read_rows(void){
 	else if(!HAL_GPIO_READPin(GPIOA, GPIO_PIN_4)) return 4;
 	else return 0;
 
+}
+void delay(uint32_t time){
+	TDelay = time;
+	while(TDelay != 0);
 }
 
 //Checks if a column has been pressed and returns a value of the column pressed (otherwise 0).

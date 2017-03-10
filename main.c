@@ -13,6 +13,7 @@
 #include "supporting_functions.h"
 #include "lis3dsh.h"
 #include "accelerometer.h"
+#include "keypad.h"
 
 /* Private variables ---------------------------------------------------------*/
 float accelerometer_data[3];
@@ -23,6 +24,8 @@ void SystemClock_Config	(void);
 int main(void)
 {	
 	float pitch, roll;
+	int output[] = {0, 0, 0};
+	int i;
   /* MCU Configuration----------------------------------------------------------*/
 	int target;
   HAL_Init();
@@ -35,7 +38,6 @@ int main(void)
 	__GPIOE_CLK_ENABLE();
 	
 	init_accelerometer();
-	int output[3] = {0, 0, 0};
 	while (1)
 	{
 		if(accel_rdy_flag == 1)
@@ -44,7 +46,7 @@ int main(void)
 			if (key_stage == 4){
 				key_stage = 0;
 				printf("Angle entered is");
-				for(int i =0; i++; i<3){
+				for( i = 0; i<3; i++){
 					printf("%d", output[i]);
 			}
 			target = output[0]*100 + output[1]*10 +output[2];

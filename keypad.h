@@ -9,6 +9,8 @@ void init_rows(void);
 
 void init_columns(void);
 
+void delay(uint32_t time);
+
 uint8_t read_rows(void);
 
 uint8_t read_columns(void);
