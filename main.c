@@ -42,7 +42,10 @@ int main(void)
 			printf("Data on x: %f\n", accelerometer_data[0]);
 			printf("Data on y: %f\n", accelerometer_data[1]);
 			printf("Data on z: %f\n", accelerometer_data[2]);
-			
+			float pitch = calc_pitch(accelerometer_data);
+			printf("Pitch is: %f\n", pitch);
+			float roll = calc_roll(accelerometer_data);
+			printf("Roll is: %f\n", roll);
 			accel_rdy_flag = 0;
 		}
 	}
